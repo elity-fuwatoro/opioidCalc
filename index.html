@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  <style>
+    .standardValue {
+      width: 3em;
+    }
+
+    .convertedValue {
+      width: 4em;
+    }
+  </style>
+  <title>オピオイド変換器</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="table-responsive">
+      <table id="opioidTable" class="table table-striped">
+        <thead>
+          <tr>
+            <th>オピオイド(規格)</th>
+            <th>力価</th>
+            <th>入力</th>
+            <th>結果(10-20%)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>MSコンチン(10/30) <br>オプソ(5/10) </td>
+            <td> <input type="number" value="30" class="standardValue"> </td>
+            <td> <input type="number" class="convertedValue"> </td>
+            <td class="resultValue rescue link-primary"></td>
+          </tr>
+          <tr>
+            <td>モルヒネ注</td>
+            <td> <input type="number" value="15" class="standardValue"> </td>
+            <td> <input type="number" class="convertedValue"> </td>
+            <td class="resultValue link-primary"></td>
+          </tr>
+          <tr>
+            <td>アンペック</td>
+            <td> <input type="number" value="20" class="standardValue"> </td>
+            <td> <input type="number" class="convertedValue"> </td>
+            <td class="resultValue link-primary"></td>
+          </tr>
+          <tr>
+            <td>オキシコドン(5/10/40) <br>オキノーム(5/10) </td>
+            <td> <input type="number" value="20" class="standardValue"> </td>
+            <td> <input type="number" class="convertedValue"> </td>
+            <td class="resultValue rescue link-primary"></td>
+          </tr>
+          <tr>
+            <td>オキファスト注</td>
+            <td> <input type="number" value="15" class="standardValue"> </td>
+            <td> <input type="number" class="convertedValue"> </td>
+            <td class="resultValue link-primary"></td>
+          </tr>
+          <tr>
+            <td>ナルサス(2/6) <br>ナルラピド(1/4) </td>
+            <td> <input type="number" value="6" class="standardValue"> </td>
+            <td> <input type="number" class="convertedValue"> </td>
+            <td class="resultValue rescue link-primary"></td>
+          </tr>
+          <tr>
+            <td>ナルベインに変更</td>
+            <td> <input type="number" value="1.2" class="standardValue"> </td>
+            <td> <input type="number" class="convertedValue" disabled> </td>
+            <td class="resultValue link-primary"></td>
+          </tr>
+          <tr>
+            <td>ナルベインから変更</td>
+            <td> <input type="number" value="2.4" class="standardValue"> </td>
+            <td> <input type="number" class="convertedValue"> </td>
+            <td class="resultValue link-primary"></td>
+          </tr>
+          <tr>
+            <td>タペンタ</td>
+            <td> <input type="number" value="100" class="standardValue"> </td>
+            <td> <input type="number" class="convertedValue"> </td>
+            <td class="resultValue link-primary"></td>
+          </tr>
+          <tr>
+            <td>フェンタニル注</td>
+            <td> <input type="number" value="0.3" class="standardValue"> </td>
+            <td> <input type="number" class="convertedValue"> </td>
+            <td class="resultValue link-primary"></td>
+          </tr>
+          <tr>
+            <td>フェントステープ</td>
+            <td> <input type="number" value="1" class="standardValue"> </td>
+            <td> <input type="number" class="convertedValue"> </td>
+            <td class="resultValue link-primary"></td>
+          </tr>
+          <tr>
+            <td>デュロテップMTパッチ</td>
+            <td> <input type="number" value="2.1" class="standardValue"> </td>
+            <td> <input type="number" class="convertedValue"> </td>
+            <td class="resultValue link-primary"></td>
+          </tr>
+          <tr>
+            <td>コデイン</td>
+            <td> <input type="number" value="180" class="standardValue"> </td>
+            <td> <input type="number" class="convertedValue"> </td>
+            <td class="resultValue link-primary"></td>
+          </tr>
+          <tr>
+            <td>トラマール</td>
+            <td> <input type="number" value="150" class="standardValue"> </td>
+            <td> <input type="number" class="convertedValue"> </td>
+            <td class="resultValue link-primary"></td>
+          </tr>
+          <tr>
+            <td>レペタン</td>
+            <td> <input type="number" value="0.6" class="standardValue"> </td>
+            <td> <input type="number" class="convertedValue"> </td>
+            <td class="resultValue link-primary"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>▽持続注射計算機</h4>
+    <div class="table-responsive">
+      <table id="ivTable" class="table">
+        <tbody>
+          <tr>
+            <th>&nbsp;</th>
+            <th>シリンジ</th>
+            <th>麻薬量</th>
+            <th>速度</th>
+          </tr>
+          <tr>
+            <th>入力</th>
+            <td><input type="number" value="10" id="ivSize" class="convertedValue">cc</td>
+            <td><input type="number" id="ivOpioid" class="convertedValue">mg</td>
+            <td><input type="number" id="ivSpeed" value="0.2" class="convertedValue">ml/h</td>
+          </tr>
+          <tr>
+            <th>計算結果</th>
+            <td id="ivResult">mg/日</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <th>レスキュー<br>(1時間量)</th>
+            <td><input type="number" id="ivRescue" class="convertedValue">回→</td>
+            <td id="ivRescueResult" class="link-primary"></td>
+            <td>&nbsp;</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div>変更後計算</div>
+    <div class="table-responsive">
+      <table id="ivTable2" class="table">
+        <tbody>
+          <tr>
+            <th>&nbsp;</th>
+            <th>シリンジ</th>
+            <th>麻薬量</th>
+            <th>速度</th>
+          </tr>
+          <tr>
+            <th>入力</th>
+            <td><input type="number" value="10" id="ivSize2" class="convertedValue">cc</td>
+            <td><input type="number" id="ivOpioid2" class="convertedValue">mg</td>
+            <td><input type="number" id="ivSpeed2" value="0.2" class="convertedValue">ml/h</td>
+          </tr>
+          <tr>
+            <th>計算結果</th>
+            <td id="ivResult2">mg/日</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+    crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var convertedValues = document.getElementById('opioidTable').querySelectorAll('.convertedValue');
+      convertedValues.forEach(function (input) {
+        input.addEventListener('input', function () {
+          var row = this.parentNode.parentNode;
+          var times = this.value / row.querySelector('.standardValue').value;
+          convertedValues.forEach(function (otherInput) {
+            if (otherInput !== input) {
+              otherInput.value = "";
+            }
+          });
+          document.getElementById('opioidTable').querySelectorAll('.standardValue').forEach(function (stdValue) {
+            var resultRow = stdValue.parentNode.parentNode;
+            var resultQuery = resultRow.querySelector('.resultValue');
+            var result = stdValue.value * times;
+            var resultText = Math.round(result * 10) / 10;
+            var rescurText = (Math.round(result) / 10) + '-' + (Math.round(result * 2) / 10);
+            if (resultRow.querySelector('.resultValue.rescue')) {
+              //レスキューを表示する場合(classにrescueがある場合)
+              resultQuery.innerHTML = '<span style="cursor: pointer" onclick="onClickResults(' + resultText + ');">' + resultText + '</span><br>(' + rescurText + ')';
+            } else {
+              //レスキュー表示しない場合
+              resultQuery.innerHTML = '<span style="cursor: pointer" onclick="onClickResults(' + resultText + ');">' + resultText + '</span>';
+            }
+          });
+        });
+      });
+      //　以下は持続注射計算機
+      var ivValues = document.getElementById('ivTable').querySelectorAll('.convertedValue');
+      ivValues.forEach(function (ivInput) {
+        ivInput.addEventListener('input', function () {
+          var unitOpioid = document.getElementById('ivOpioid').value / document.getElementById('ivSize').value * document.getElementById('ivSpeed').value;
+          var dayResult = unitOpioid * 24;
+          var rescueResult = Math.round((dayResult + unitOpioid * document.getElementById('ivRescue').value) * 10) / 10;
+          document.getElementById('ivResult').innerText = Math.round(dayResult * 10) / 10 + 'mg/日';
+          document.getElementById('ivRescueResult').innerHTML = '<span style="cursor: pointer" onclick="onClickRescue(' + rescueResult + ');">' + rescueResult + 'mg/日</span>';
+        });
+      });
+
+      //　持続注射計算機2個目
+      var ivValues2 = document.getElementById('ivTable2').querySelectorAll('.convertedValue');
+      ivValues2.forEach(function (ivInput2) {
+        ivInput2.addEventListener('input', function () {
+          var unitOpioid = document.getElementById('ivOpioid2').value / document.getElementById('ivSize2').value * document.getElementById('ivSpeed2').value;
+          var dayResult = unitOpioid * 24;
+          document.getElementById('ivResult2').innerText = Math.round(dayResult * 10) / 10 + 'mg/日';
+        });
+      });
+
+    });
+    function onClickResults(opVal) {
+      //　0.2ml/hのときに丸めて大体10ccシリンジに何mgの量が適切かを計算
+      var ivOpioid = document.getElementById('ivOpioid');
+      ivOpioid.value = Math.round(opVal * 10 / 0.2 / 24);
+      ivOpioid.dispatchEvent(new Event('input'));;
+    }
+    function onClickRescue(opVal) {
+      //　0.2ml/hのときに丸めて大体10ccシリンジに何mgの量が適切かを計算
+      var ivOpioid = document.getElementById('ivOpioid2');
+      ivOpioid.value = Math.round(opVal * 10 / 0.2 / 24);
+      ivOpioid.dispatchEvent(new Event('input'));;
+    }
+  </script>
+</body>
+
+</html>
