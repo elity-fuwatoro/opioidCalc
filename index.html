@@ -50,7 +50,7 @@
             <td class="resultValue link-primary"></td>
           </tr>
           <tr>
-            <td>オキシコドン(5/10/40) <br>オキノーム(5/10) </td>
+            <td>オキシコドン(5/10/40) <br>オキノーム(2.5/5/10/20) </td>
             <td> <input type="number" value="20" class="standardValue"> </td>
             <td> <input type="number" class="convertedValue"> </td>
             <td class="resultValue rescue link-primary"></td>
@@ -180,7 +180,7 @@
         </tbody>
       </table>
     </div>
-    <p>青い数字をクリックすると持続注射計算機の麻薬量が計算されて入力されます。<br>シリンジサイズ、速度は適宜取得されます。</p>
+    <p>青い数字をクリックすると持続注射計算機の麻薬量が計算されて入力されます(5mg刻みで大体です)<br>シリンジサイズ、速度は適宜取得されます。</p>
   </div>
   <figure class="text-end">
     <figcaption class="blockquote-footer">
@@ -243,16 +243,21 @@
 
     });
     function onClickResults(opVal) {
-      //　0.2ml/hのときに丸めて大体10ccシリンジに何mgの量が適切かを計算(速度とサイズは取得)
+      //　0.2ml/hのときに丸めて大体(5刻み)10ccシリンジに何mgの量が適切かを計算(速度とサイズは取得) 
       var ivOpioid = document.getElementById('ivOpioid');
-      ivOpioid.value = Math.round(opVal * document.getElementById('ivSize').value / document.getElementById('ivSpeed').value / 24);
+      ivOpioid.value = Round5(opVal * document.getElementById('ivSize').value / document.getElementById('ivSpeed').value / 24);
       ivOpioid.dispatchEvent(new Event('input'));;
+      ivOpioid.scrollIntoView({ behavior: 'smooth' });
     }
     function onClickRescue(opVal) {
-      //　0.2ml/hのときに丸めて大体10ccシリンジに何mgの量が適切かを計算
+      //　0.2ml/hのときに丸めて大体(5刻み)10ccシリンジに何mgの量が適切かを計算(速度とサイズは取得)
       var ivOpioid = document.getElementById('ivOpioid2');
-      ivOpioid.value = Math.round(opVal * document.getElementById('ivSize2').value / document.getElementById('ivSpeed2').value / 24);
+      ivOpioid.value = Round5(opVal * document.getElementById('ivSize2').value / document.getElementById('ivSpeed2').value / 24);
       ivOpioid.dispatchEvent(new Event('input'));;
+      ivOpioid.scrollIntoView({ behavior: 'smooth' });
+    }
+    function Round5(x) {
+      return (Math.round(x * 2 / 10) * 10 / 2);
     }
   </script>
 </body>
