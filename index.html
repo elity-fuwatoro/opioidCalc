@@ -125,6 +125,7 @@
       </table>
     </div>
     <h4>▽持続注射計算機</h4>
+    <label><input type="checkbox" id="isTen" checked>自動計算時10mg刻みで四捨五入</label>
     <div class="table-responsive">
       <table id="ivTable" class="table">
         <tbody>
@@ -180,7 +181,9 @@
         </tbody>
       </table>
     </div>
-    <p>青い数字をクリックすると持続注射計算機の麻薬量が計算されて入力されます(5mg刻みで大体です)<br>シリンジサイズ、速度は適宜取得されます。</p>
+    <p>
+      青い数字をクリックすると持続注射計算機の麻薬量が計算されて入力されます(チェックあれば10mg刻み、なければ1の位で四捨五入)<br>シリンジサイズ、速度は適宜取得されます。<br>すべての計算結果は基本的には小数台2位で四捨五入されています
+    </p>
   </div>
   <figure class="text-end">
     <figcaption class="blockquote-footer">
@@ -243,21 +246,24 @@
 
     });
     function onClickResults(opVal) {
-      //　0.2ml/hのときに丸めて大体(5刻み)10ccシリンジに何mgの量が適切かを計算(速度とサイズは取得) 
+      //　0.2ml/hのときに丸めて大体(10刻み)10ccシリンジに何mgの量が適切かを計算(速度とサイズは取得) 
       var ivOpioid = document.getElementById('ivOpioid');
-      ivOpioid.value = Round5(opVal * document.getElementById('ivSize').value / document.getElementById('ivSpeed').value / 24);
+      var isTen = document.getElementById('isTen').checked;
+      ivOpioid.value = Round10(opVal * document.getElementById('ivSize').value / document.getElementById('ivSpeed').value / 24, isTen);
       ivOpioid.dispatchEvent(new Event('input'));;
       ivOpioid.scrollIntoView({ behavior: 'smooth' });
     }
     function onClickRescue(opVal) {
-      //　0.2ml/hのときに丸めて大体(5刻み)10ccシリンジに何mgの量が適切かを計算(速度とサイズは取得)
+      //　0.2ml/hのときに丸めて大体(10刻み)10ccシリンジに何mgの量が適切かを計算(速度とサイズは取得)
       var ivOpioid = document.getElementById('ivOpioid2');
-      ivOpioid.value = Round5(opVal * document.getElementById('ivSize2').value / document.getElementById('ivSpeed2').value / 24);
+      var isTen = document.getElementById('isTen').checked;
+      ivOpioid.value = Round10(opVal * document.getElementById('ivSize2').value / document.getElementById('ivSpeed2').value / 24, isTen);
       ivOpioid.dispatchEvent(new Event('input'));;
       ivOpioid.scrollIntoView({ behavior: 'smooth' });
     }
-    function Round5(x) {
-      return (Math.round(x * 2 / 10) * 10 / 2);
+    function Round10(x, isTen) {
+      if (isTen) { return (Math.round(x / 10) * 10); }
+      return (Math.round(x));
     }
   </script>
 </body>
