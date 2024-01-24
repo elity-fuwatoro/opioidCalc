@@ -125,7 +125,23 @@
       </table>
     </div>
     <h4>▽持続注射計算機</h4>
-    <label><input type="checkbox" id="isTen" checked>自動計算時10mg刻みで四捨五入</label>
+    <form id="roundBox">近似の位：<br>
+      <label class="form-check-label">
+        <input class="form-check-input" type="radio" name="round" value="10" checked>10mg&nbsp;
+      </label>
+      <label class="form-check-label">
+        <input class="form-check-input" type="radio" name="round" value="20">20mg&nbsp;
+      </label>
+      <label class="form-check-label">
+        <input class="form-check-input" type="radio" name="round" value="2">2mg&nbsp;
+      </label>
+      <label class="form-check-label">
+        <input class="form-check-input" type="radio" name="round" value="1">1mg&nbsp;
+      </label>
+      <label class="form-check-label">
+        <input class="form-check-input" type="radio" name="round" value="0.1">0.1mg
+      </label>
+    </form>
     <div class="table-responsive">
       <table id="ivTable" class="table">
         <tbody>
@@ -181,8 +197,9 @@
         </tbody>
       </table>
     </div>
+    <div><input type="button" value="クリア(再読込)" onclick="location.reload();"></div>
     <p>
-      青い数字をクリックすると持続注射計算機の麻薬量が計算されて入力されます(チェックあれば10mg刻み、なければ1の位で四捨五入)<br>シリンジサイズ、速度は適宜取得されます。<br>すべての計算結果は基本的には小数台2位で四捨五入されています
+      青い数字をクリックすると「麻薬量」が自動計算されます(近似の位で)<br>シリンジサイズ、速度は適宜取得されます。<br>すべての計算結果は基本的には小数第3位で四捨五入されています
     </p>
   </div>
   <figure class="text-end">
@@ -210,7 +227,7 @@
             var resultRow = stdValue.parentNode.parentNode;
             var resultQuery = resultRow.querySelector('.resultValue');
             var result = stdValue.value * times;
-            var resultText = Math.round(result * 10) / 10;
+            var resultText = Math.round(result * 100) / 100;
             var rescurText = (Math.round(result) / 10) + '-' + (Math.round(result * 2) / 10);
             if (resultRow.querySelector('.resultValue.rescue')) {
               //レスキューを表示する場合(classにrescueがある場合)
@@ -228,8 +245,8 @@
         ivInput.addEventListener('input', function () {
           var unitOpioid = document.getElementById('ivOpioid').value / document.getElementById('ivSize').value * document.getElementById('ivSpeed').value;
           var dayResult = unitOpioid * 24;
-          var rescueResult = Math.round((dayResult + unitOpioid * document.getElementById('ivRescue').value) * 10) / 10;
-          document.getElementById('ivResult').innerText = Math.round(dayResult * 10) / 10 + 'mg/日';
+          var rescueResult = Math.round((dayResult + unitOpioid * document.getElementById('ivRescue').value) * 100) / 100;
+          document.getElementById('ivResult').innerText = Math.round(dayResult * 100) / 100 + 'mg/日';
           document.getElementById('ivRescueResult').innerHTML = '<span style="cursor: pointer" onclick="onClickRescue(' + rescueResult + ');">' + rescueResult + 'mg/日</span>';
         });
       });
@@ -240,7 +257,7 @@
         ivInput2.addEventListener('input', function () {
           var unitOpioid = document.getElementById('ivOpioid2').value / document.getElementById('ivSize2').value * document.getElementById('ivSpeed2').value;
           var dayResult = unitOpioid * 24;
-          document.getElementById('ivResult2').innerText = Math.round(dayResult * 10) / 10 + 'mg/日';
+          document.getElementById('ivResult2').innerText = Math.round(dayResult * 100) / 100 + 'mg/日';
         });
       });
 
@@ -248,22 +265,32 @@
     function onClickResults(opVal) {
       //　0.2ml/hのときに丸めて大体(10刻み)10ccシリンジに何mgの量が適切かを計算(速度とサイズは取得) 
       var ivOpioid = document.getElementById('ivOpioid');
-      var isTen = document.getElementById('isTen').checked;
-      ivOpioid.value = Round10(opVal * document.getElementById('ivSize').value / document.getElementById('ivSpeed').value / 24, isTen);
+      var isTen = document.getElementById('roundBox').elements['round'].value;
+      ivOpioid.value = RoundNum(opVal * document.getElementById('ivSize').value / document.getElementById('ivSpeed').value / 24, isTen);
       ivOpioid.dispatchEvent(new Event('input'));;
       ivOpioid.scrollIntoView({ behavior: 'smooth' });
     }
     function onClickRescue(opVal) {
       //　0.2ml/hのときに丸めて大体(10刻み)10ccシリンジに何mgの量が適切かを計算(速度とサイズは取得)
       var ivOpioid = document.getElementById('ivOpioid2');
-      var isTen = document.getElementById('isTen').checked;
-      ivOpioid.value = Round10(opVal * document.getElementById('ivSize2').value / document.getElementById('ivSpeed2').value / 24, isTen);
+      var isTen = document.getElementById('roundBox').elements['round'].value;
+      ivOpioid.value = RoundNum(opVal * document.getElementById('ivSize2').value / document.getElementById('ivSpeed2').value / 24, isTen);
       ivOpioid.dispatchEvent(new Event('input'));;
       ivOpioid.scrollIntoView({ behavior: 'smooth' });
     }
-    function Round10(x, isTen) {
-      if (isTen) { return (Math.round(x / 10) * 10); }
-      return (Math.round(x));
+    function RoundNum(x, isTen) {
+      if (isTen == "10") {
+        return (Math.round(x / 10) * 10);
+      } else if (isTen == "20") {
+        return (Math.round(x / 20) * 20);
+      } else if (isTen == "2") {
+        return (Math.round(x / 2) * 2);
+      } else if (isTen == "1") {
+        return (Math.round(x));
+      } else if (isTen == "0.1") {
+        return (Math.round(x * 10) / 10);
+      }
+      return (Math.round(x * 100) / 100);
     }
   </script>
 </body>
