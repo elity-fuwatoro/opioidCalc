@@ -125,21 +125,22 @@
       </table>
     </div>
     <h4>▽持続注射計算機</h4>
-    <form id="roundBox">近似の位：<br>
+    <div>目標量：<input type="number" value="" id="targetDose" class="convertedValue">mg/日</div>
+    <form id="roundBox">▼端数処理<br>
       <label class="form-check-label">
-        <input class="form-check-input" type="radio" name="round" value="10" checked>10mg&nbsp;
+        <input class="form-check-input" type="radio" name="rNum" value="10" checked>10mg&nbsp;
       </label>
       <label class="form-check-label">
-        <input class="form-check-input" type="radio" name="round" value="20">20mg&nbsp;
+        <input class="form-check-input" type="radio" name="rNum" value="20">20mg&nbsp;
       </label>
       <label class="form-check-label">
-        <input class="form-check-input" type="radio" name="round" value="2">2mg&nbsp;
+        <input class="form-check-input" type="radio" name="rNum" value="2">2mg&nbsp;
       </label>
       <label class="form-check-label">
-        <input class="form-check-input" type="radio" name="round" value="1">1mg&nbsp;
+        <input class="form-check-input" type="radio" name="rNum" value="1">1mg&nbsp;
       </label>
       <label class="form-check-label">
-        <input class="form-check-input" type="radio" name="round" value="0.1">0.1mg
+        <input class="form-check-input" type="radio" name="rNum" value="0.1">0.1mg
       </label>
     </form>
     <div class="table-responsive">
@@ -159,12 +160,10 @@
           </tr>
           <tr>
             <th>計算結果</th>
-            <td id="ivResult">mg/日</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
+            <td id="ivResult" colspan="3">mg/日</td>
           </tr>
           <tr>
-            <th>ﾚｽｷｭｰ<br>(1時間量)</th>
+            <th>ﾚｽｷｭｰ<br>(1h量)</th>
             <td><input type="number" id="ivRescue" class="convertedValue">回</td>
             <td id="ivRescueResult" class="link-primary"></td>
             <td>&nbsp;</td>
@@ -190,16 +189,14 @@
           </tr>
           <tr>
             <th>計算結果</th>
-            <td id="ivResult2">mg/日</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
+            <td id="ivResult2" colspan="3">mg/日</td>
           </tr>
         </tbody>
       </table>
     </div>
     <div><input type="button" value="クリア(再読込)" onclick="location.reload();"></div>
     <p>
-      青い数字をクリックすると「麻薬量」が自動計算されます(近似の位で)<br>シリンジサイズ、速度は適宜取得されます。<br>すべての計算結果は基本的には小数第3位で四捨五入されています
+      青い数字をクリックすると持続注射計算機の目標値がセットされます<br>目標量を変更すると麻薬量が端数処理され計算されます(シリンジサイズ、速度は適宜取得)<br>計算結果は基本的に小数第3位で四捨五入されています
     </p>
   </div>
   <figure class="text-end">
@@ -243,10 +240,13 @@
       var ivValues = document.getElementById('ivTable').querySelectorAll('.convertedValue');
       ivValues.forEach(function (ivInput) {
         ivInput.addEventListener('input', function () {
-          var unitOpioid = document.getElementById('ivOpioid').value / document.getElementById('ivSize').value * document.getElementById('ivSpeed').value;
+          var opDose = document.getElementById('ivOpioid').value;
+          var opSize = document.getElementById('ivSize').value;
+          var opSpeed = document.getElementById('ivSpeed').value;
+          var unitOpioid = opDose / opSize * opSpeed;
           var dayResult = unitOpioid * 24;
           var rescueResult = Math.round((dayResult + unitOpioid * document.getElementById('ivRescue').value) * 100) / 100;
-          document.getElementById('ivResult').innerText = Math.round(dayResult * 100) / 100 + 'mg/日';
+          document.getElementById('ivResult').innerHTML = '<p class="small">' + opDose + 'mgの薬を' + opSize + 'ccに希釈し' + opSpeed + 'ml/hでの1日量</p>' + Math.round(dayResult * 100) / 100 + 'mg/日';
           document.getElementById('ivRescueResult').innerHTML = '<span style="cursor: pointer" onclick="onClickRescue(' + rescueResult + ');">' + rescueResult + 'mg/日</span>';
         });
       });
@@ -260,37 +260,36 @@
           document.getElementById('ivResult2').innerText = Math.round(dayResult * 100) / 100 + 'mg/日';
         });
       });
+      // 目標値が変更されたとき
+      document.getElementById('targetDose').addEventListener('input', function () {
+        var ivOpioid = document.getElementById('ivOpioid');
+        ivOpioid.value = RoundNum(this.value * document.getElementById('ivSize').value / document.getElementById('ivSpeed').value / 24);
+        ivOpioid.dispatchEvent(new Event('input'));
+      });
 
+      //　近似ラジオボタンが変更されたとき
+      document.getElementById('roundBox').addEventListener('change', function () {
+        document.getElementById('targetDose').dispatchEvent(new Event('input'));
+      });
     });
     function onClickResults(opVal) {
-      //　0.2ml/hのときに丸めて大体(10刻み)10ccシリンジに何mgの量が適切かを計算(速度とサイズは取得) 
-      var ivOpioid = document.getElementById('ivOpioid');
-      var isTen = document.getElementById('roundBox').elements['round'].value;
-      ivOpioid.value = RoundNum(opVal * document.getElementById('ivSize').value / document.getElementById('ivSpeed').value / 24, isTen);
-      ivOpioid.dispatchEvent(new Event('input'));;
-      ivOpioid.scrollIntoView({ behavior: 'smooth' });
+      // 設定値に数値を入れて持続注射計算機へスクロールを持っていく
+      var tD = document.getElementById('targetDose');
+      tD.value = opVal;
+      tD.dispatchEvent(new Event('input'));
+      tD.scrollIntoView({ behavior: 'smooth' });
     }
     function onClickRescue(opVal) {
-      //　0.2ml/hのときに丸めて大体(10刻み)10ccシリンジに何mgの量が適切かを計算(速度とサイズは取得)
+      // 変更後計算を行う
       var ivOpioid = document.getElementById('ivOpioid2');
-      var isTen = document.getElementById('roundBox').elements['round'].value;
-      ivOpioid.value = RoundNum(opVal * document.getElementById('ivSize2').value / document.getElementById('ivSpeed2').value / 24, isTen);
-      ivOpioid.dispatchEvent(new Event('input'));;
+      ivOpioid.value = RoundNum(opVal * document.getElementById('ivSize2').value / document.getElementById('ivSpeed2').value / 24);
+      ivOpioid.dispatchEvent(new Event('input'));
       ivOpioid.scrollIntoView({ behavior: 'smooth' });
     }
-    function RoundNum(x, isTen) {
-      if (isTen == "10") {
-        return (Math.round(x / 10) * 10);
-      } else if (isTen == "20") {
-        return (Math.round(x / 20) * 20);
-      } else if (isTen == "2") {
-        return (Math.round(x / 2) * 2);
-      } else if (isTen == "1") {
-        return (Math.round(x));
-      } else if (isTen == "0.1") {
-        return (Math.round(x * 10) / 10);
-      }
-      return (Math.round(x * 100) / 100);
+    function RoundNum(x) {
+      var rNum = Number(document.getElementById('roundBox').elements['rNum'].value);
+      //float誤差対策で10をかけて丸める=0.1mgまでしか想定していない
+      return (Math.round(Math.round(x / rNum) * rNum * 10) / 10);
     }
   </script>
 </body>
