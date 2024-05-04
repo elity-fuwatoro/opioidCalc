@@ -125,7 +125,9 @@
       </table>
     </div>
     <h4>▽持続注射計算機</h4>
-    <div>目標量：<input type="number" value="" id="targetDose" class="convertedValue">mg/日</div>
+    <div>目標量：<input type="number" value="" id="targetDose" class="convertedValue">mg/日&nbsp;&nbsp;
+      <!-- <input type="button" value="アキュフーザー" onclick="">&nbsp;<input type="button" value="シリンジ" onclick=""> -->
+    </div>
     <form id="roundBox">▼端数処理<br>
       <label class="form-check-label">
         <input class="form-check-input" type="radio" name="rNum" value="10" checked>10mg&nbsp;
@@ -161,6 +163,11 @@
           <tr>
             <th>計算結果</th>
             <td id="ivResult" colspan="3">mg/日</td>
+          </tr>
+          <tr>
+            <th>x日用</th>
+            <td><input type="number" value="2" id="ivDay" class="convertedValue">日</td>
+            <td id="ivDayResult" colspan="3"></td>
           </tr>
           <tr>
             <th>ﾚｽｷｭｰ<br>(1h量)</th>
@@ -243,11 +250,15 @@
           var opDose = document.getElementById('ivOpioid').value;
           var opSize = document.getElementById('ivSize').value;
           var opSpeed = document.getElementById('ivSpeed').value;
+          var opDay = document.getElementById('ivDay').value;
           var unitOpioid = opDose / opSize * opSpeed;
           var dayResult = unitOpioid * 24;
+          var remainOp = (opSize - (opSpeed * opDay * 24)) / opSpeed;
+          var rescueOp = Math.round(remainOp / opDay * 100) / 100;
           var rescueResult = Math.round((dayResult + unitOpioid * document.getElementById('ivRescue').value) * 100) / 100;
           document.getElementById('ivResult').innerHTML = '<p class="small">' + opDose + 'mgの薬を' + opSize + 'ccに希釈し' + opSpeed + 'ml/hでの1日量</p>' + Math.round(dayResult * 100) / 100 + 'mg/日';
           document.getElementById('ivRescueResult').innerHTML = '<span style="cursor: pointer" onclick="onClickRescue(' + rescueResult + ');">' + rescueResult + 'mg/日</span>';
+          document.getElementById('ivDayResult').innerHTML = 'レスキュー' + Math.round(remainOp * 100) / 100 + '回 (' + rescueOp + '回/日)分';
         });
       });
 
