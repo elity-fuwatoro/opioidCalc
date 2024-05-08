@@ -126,7 +126,8 @@
     </div>
     <h4>▽持続注射計算機</h4>
     <div>目標量：<input type="number" value="" id="targetDose" class="convertedValue">mg/日&nbsp;&nbsp;
-      <!-- <input type="button" value="アキュフーザー" onclick="">&nbsp;<input type="button" value="シリンジ" onclick=""> -->
+      <input type="button" value="アキュフーザー" onclick="onClickPCA(100, 0.5, 7)">&nbsp;<input type="button" value="シリンジ"
+        onclick="onClickPCA(10, 0.2, 2)">
     </div>
     <form id="roundBox">▼端数処理<br>
       <label class="form-check-label">
@@ -167,18 +168,18 @@
           <tr>
             <th>x日用</th>
             <td><input type="number" value="2" id="ivDay" class="convertedValue">日</td>
-            <td id="ivDayResult" colspan="3"></td>
+            <td id="ivDayResult" colspan="2"></td>
           </tr>
           <tr>
             <th>ﾚｽｷｭｰ<br>(1h量)</th>
             <td><input type="number" id="ivRescue" class="convertedValue">回</td>
-            <td id="ivRescueResult" class="link-primary"></td>
-            <td>&nbsp;</td>
+            <td id="ivRescueResult" colspan="2" class="link-primary"></td>
           </tr>
         </tbody>
       </table>
     </div>
-    <div>変更後計算</div>
+    <div>変更後計算 <input type="button" value="アキュフーザー" onclick="onClickPCA2(100, 0.5)">&nbsp;<input type="button"
+        value="シリンジ" onclick="onClickPCA2(10, 0.2)"></div>
     <div class="table-responsive">
       <table id="ivTable2" class="table">
         <tbody>
@@ -296,6 +297,18 @@
       ivOpioid.value = RoundNum(opVal * document.getElementById('ivSize2').value / document.getElementById('ivSpeed2').value / 24);
       ivOpioid.dispatchEvent(new Event('input'));
       ivOpioid.scrollIntoView({ behavior: 'smooth' });
+    }
+    function onClickPCA(size, speed, day) {
+      document.getElementById('ivSize').value = size;
+      document.getElementById('ivSpeed').value = speed;
+      document.getElementById('ivDay').value = day;
+      onClickPCA2(size, speed);
+      document.getElementById('targetDose').dispatchEvent(new Event('input'));
+    }
+    function onClickPCA2(size, speed) {
+      document.getElementById('ivSize2').value = size;
+      document.getElementById('ivSpeed2').value = speed;
+      document.getElementById('ivOpioid2').dispatchEvent(new Event('input'));
     }
     function RoundNum(x) {
       var rNum = Number(document.getElementById('roundBox').elements['rNum'].value);
