@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    /* Basic Reset & Body Style */
+    body {
+      font-family: sans-serif;
+      line-height: 1.5;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f9fa;
+      /* Light background */
+      color: #212529;
+      /* Default text color */
+    }
+
+    /* Container Style (replaces .container) */
+    .container {
+      max-width: 960px;
+      /* Adjust as needed */
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+
+    /* Table Styles (replaces .table, .table-striped, .table-responsive) */
+    .table-responsive {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      /* Smooth scrolling on iOS */
+    }
+
+    table {
+      width: 100%;
+      margin-bottom: 1rem;
+      color: #212529;
+      border-collapse: collapse;
+      vertical-align: top;
+    }
+
+    th,
+    td {
+      padding: 0.35rem;
+      vertical-align: top;
+      border-top: 1px solid #dee2e6;
+      /* Light gray border */
+    }
+
+    thead th {
+      vertical-align: bottom;
+      border-bottom: 2px solid #dee2e6;
+      text-align: inherit;
+      /* Align header text */
+    }
+
+    tbody tr:nth-of-type(odd) {
+      background-color: rgba(0, 0, 0, 0.05);
+      /* Striped effect */
+    }
+
+    /* Input Field Styles */
+    input[type="number"],
+    input[type="button"] {
+      padding: 0.375rem 0.75rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      border: 1px solid #ced4da;
+      border-radius: 0.25rem;
+      margin: 0.25rem 0;
+      /* Include padding and border in the element's total width and height */
+    }
+
+    input[type="button"] {
+      cursor: pointer;
+      background-color: #e9ecef;
+      /* Light gray button */
+      color: #212529;
+      text-align: center;
+      vertical-align: middle;
+      user-select: none;
+      transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    }
+
+    input[type="button"]:hover {
+      background-color: #d3d9df;
+      /* Slightly darker on hover */
+    }
+
+    input[type="button"]:active {
+      background-color: #c6cfd8;
+      /* Darker when active */
+    }
+
+    input[type="number"]:disabled {
+      background-color: #e9ecef;
+      opacity: 1;
+    }
+
+    /* Custom Width Styles */
+    .standardValue {
+      width: 3em;
+    }
+
+    .convertedValue {
+      width: 4em;
+    }
+
+    /* Form Check Styles (replaces .form-check-label, .form-check-input) */
+    form label {
+      display: inline-block;
+      /* Align radio buttons and labels */
+      margin-right: 1em;
+      /* Spacing between radio options */
+      margin-bottom: 0.5rem;
+    }
+
+    form input[type="radio"] {
+      margin-right: 0.5em;
+      /* Align radio button with text */
+    }
+
+    /* Link Style (replaces .link-primary) */
+    .resultValue span[onclick],
+    #ivRescueResult span[onclick] {
+      color: #0d6efd;
+      /* Bootstrap primary blue */
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .resultValue span[onclick]:hover,
+    #ivRescueResult span[onclick]:hover {
+      color: #0a58ca;
+      /* Darker blue on hover */
+    }
+
+    /* Text Alignment (replaces .text-end) */
+    .text-end {
+      text-align: right;
+    }
+
+    /* Blockquote Footer Style (replaces .blockquote-footer) */
+    .blockquote-footer {
+      margin-top: -1rem;
+      margin-bottom: 1rem;
+      font-size: .875em;
+      color: #6c757d;
+      /* Bootstrap secondary text color */
+    }
+
+    .blockquote-footer a {
+      color: #6c757d;
+      text-decoration: none;
+    }
+
+    .blockquote-footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Small Text Style (replaces .small) */
+    .small {
+      font-size: .875em;
+    }
+
+    /* Headings */
+    h4 {
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      line-height: 1.2;
+    }
+  </style>
+  <title>オピオイド変換器</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="table-responsive">
+      <table id="opioidTable">
+        <thead>
+          <tr>
+            <th>オピオイド(規格)</th>
+            <th>力価</th>
+            <th>入力</th>
+            <th>結果(10-20%)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>MSコンチン(10/30) <br>オプソ(5/10) </td>
+            <td> <input type="number" value="30" class="standardValue"> </td>
+            <td> <input type="number" class="convertedValue"> </td>
+            <td class="resultValue rescue"></td>
+          </tr>
+          <tr>
+            <td>モルヒネ注</td>
+            <td> <input type="number" value="15" class="standardValue"> </td>
+            <td> <input type="number" class="convertedValue"> </td>
+            <td class="resultValue"></td>
+          </tr>
+          <tr>
+            <td>アンペック</td>
+            <td> <input type="number" value="20" class="standardValue"> </td>
+            <td> <input type="number" class="convertedValue"> </td>
+            <td class="resultValue"></td>
+          </tr>
+          <tr>
+            <td>オキシコドン(5/10/40) <br>オキノーム(2.5/5/10/20) </td>
+            <td> <input type="number" value="20" class="standardValue"> </td>
+            <td> <input type="number" class="convertedValue"> </td>
+            <td class="resultValue rescue"></td>
+          </tr>
+          <tr>
+            <td>オキファスト注</td>
+            <td> <input type="number" value="15" class="standardValue"> </td>
+            <td> <input type="number" class="convertedValue"> </td>
+            <td class="resultValue"></td>
+          </tr>
+          <tr>
+            <td>ナルサス(2/6) <br>ナルラピド(1/4) </td>
+            <td> <input type="number" value="6" class="standardValue"> </td>
+            <td> <input type="number" class="convertedValue"> </td>
+            <td class="resultValue rescue"></td>
+          </tr>
+          <tr>
+            <td>ナルベインに変更</td>
+            <td> <input type="number" value="1.2" step="0.1" class="standardValue"> </td>
+            <td> <input type="number" step="0.1" class="convertedValue" disabled> </td>
+            <td class="resultValue"></td>
+          </tr>
+          <tr>
+            <td>ナルベインから変更</td>
+            <td> <input type="number" value="2.4" step="0.1" class="standardValue"> </td>
+            <td> <input type="number" step="0.1" class="convertedValue"> </td>
+            <td class="resultValue"></td>
+          </tr>
+          <tr>
+            <td>タペンタ</td>
+            <td> <input type="number" value="100" class="standardValue"> </td>
+            <td> <input type="number" class="convertedValue"> </td>
+            <td class="resultValue"></td>
+          </tr>
+          <tr>
+            <td>フェンタニル注</td>
+            <td> <input type="number" value="0.3" step="0.1" class="standardValue"> </td>
+            <td> <input type="number" step="0.1" class="convertedValue"> </td>
+            <td class="resultValue"></td>
+          </tr>
+          <tr>
+            <td>フェントステープ</td>
+            <td> <input type="number" value="1" class="standardValue"> </td>
+            <td> <input type="number" class="convertedValue"> </td>
+            <td class="resultValue"></td>
+          </tr>
+          <tr>
+            <td>デュロテップMTパッチ</td>
+            <td> <input type="number" value="2.1" step="0.1" class="standardValue"> </td>
+            <td> <input type="number" step="0.1" class="convertedValue"> </td>
+            <td class="resultValue"></td>
+          </tr>
+          <tr>
+            <td>コデイン</td>
+            <td> <input type="number" value="180" class="standardValue"> </td>
+            <td> <input type="number" class="convertedValue"> </td>
+            <td class="resultValue"></td>
+          </tr>
+          <tr>
+            <td>トラマール</td>
+            <td> <input type="number" value="150" class="standardValue"> </td>
+            <td> <input type="number" class="convertedValue"> </td>
+            <td class="resultValue"></td>
+          </tr>
+          <tr>
+            <td>レペタン</td>
+            <td> <input type="number" value="0.6" step="0.1" class="standardValue"> </td>
+            <td> <input type="number" step="0.1" class="convertedValue"> </td>
+            <td class="resultValue"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>▽持続注射計算機</h4>
+    <div>目標量：<input type="number" value="" id="targetDose" class="convertedValue">mg/日&nbsp;&nbsp;
+      <input type="button" value="アキュフーザー" onclick="onClickPCA(100, 0.5, 7)">&nbsp;<input type="button" value="シリンジ"
+        onclick="onClickPCA(10, 0.2, 2)">
+    </div>
+    <form id="roundBox">▼端数処理<br>
+      <label>
+        <input type="radio" name="rNum" value="10" checked>10mg&nbsp;
+      </label>
+      <label>
+        <input type="radio" name="rNum" value="20">20mg&nbsp;
+      </label>
+      <label>
+        <input type="radio" name="rNum" value="2">2mg&nbsp;
+      </label>
+      <label>
+        <input type="radio" name="rNum" value="1">1mg&nbsp;
+      </label>
+      <label>
+        <input type="radio" name="rNum" value="0.1">0.1mg
+      </label>
+    </form>
+    <div class="table-responsive">
+      <table id="ivTable" class="table">
+        <thead>
+          <tr>
+            <th>&nbsp;</th>
+            <th>シリンジ</th>
+            <th>麻薬量</th>
+            <th>速度</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>入力</th>
+            <td><input type="number" value="10" id="ivSize" class="convertedValue">cc</td>
+            <td><input type="number" id="ivOpioid" class="convertedValue">mg</td>
+            <td><input type="number" id="ivSpeed" value="0.2" step="0.01" class="convertedValue">ml/h</td>
+          </tr>
+          <tr>
+            <th>計算結果</th>
+            <td id="ivResult" colspan="3">mg/日</td>
+          </tr>
+          <tr>
+            <th>x日用</th>
+            <td><input type="number" value="2" id="ivDay" class="convertedValue">日</td>
+            <td id="ivDayResult" colspan="2"></td>
+          </tr>
+          <tr>
+            <th>ﾚｽｷｭｰ<br>(1h量)</th>
+            <td><input type="number" id="ivRescue" class="convertedValue">回</td>
+            <td id="ivRescueResult" colspan="2" class="link-primary"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div>変更後計算 <input type="button" value="アキュフーザー" onclick="onClickPCA2(100, 0.5)">&nbsp;<input type="button"
+        value="シリンジ" onclick="onClickPCA2(10, 0.2)"></div>
+    <div class="table-responsive">
+      <table id="ivTable2" class="table">
+        <thead>
+          <tr>
+            <th>&nbsp;</th>
+            <th>シリンジ</th>
+            <th>麻薬量</th>
+            <th>速度</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>入力</th>
+            <td><input type="number" value="10" id="ivSize2" class="convertedValue">cc</td>
+            <td><input type="number" id="ivOpioid2" class="convertedValue">mg</td>
+            <td><input type="number" id="ivSpeed2" value="0.2" step="0.01" class="convertedValue">ml/h</td>
+          </tr>
+          <tr>
+            <th>計算結果</th>
+            <td id="ivResult2" colspan="3">mg/日</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div><input type="button" value="クリア(再読込)" onclick="location.reload();"></div>
+    <p>
+      青い数字をクリックすると持続注射計算機の目標値がセットされます<br>目標量を変更すると麻薬量が端数処理され計算されます(シリンジサイズ、速度は適宜取得)<br>計算結果は基本的に小数第3位で四捨五入されています
+    </p>
+  </div>
+  <figure class="text-end">
+    <figcaption class="blockquote-footer">
+      <a href="https://www.seirei.or.jp/mikatahara/doc_kanwa/contents1/54.html">参照: オピオイドの等価換算表 | 聖隷三方原病院
+        症状緩和ガイド(2024/1閲覧)</a>
+    </figcaption>
+  </figure>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var convertedValues = document.getElementById('opioidTable').querySelectorAll('.convertedValue');
+      convertedValues.forEach(function (input) {
+        input.addEventListener('input', function () {
+          var row = this.parentNode.parentNode;
+          var times = this.value / row.querySelector('.standardValue').value;
+          convertedValues.forEach(function (otherInput) {
+            if (otherInput !== input) {
+              otherInput.value = "";
+            }
+          });
+          document.getElementById('opioidTable').querySelectorAll('.standardValue').forEach(function (stdValue) {
+            var resultRow = stdValue.parentNode.parentNode;
+            var resultQuery = resultRow.querySelector('.resultValue');
+            var result = stdValue.value * times;
+            var resultText = Math.round(result * 100) / 100;
+            var rescurText = (Math.round(result) / 10) + '-' + (Math.round(result * 2) / 10);
+            if (resultRow.querySelector('.resultValue.rescue')) {
+              //レスキューを表示する場合(classにrescueがある場合)
+              resultQuery.innerHTML = '<span style="cursor: pointer" onclick="onClickResults(' + resultText + ');">' + resultText + '</span><br>(' + rescurText + ')';
+            } else {
+              //レスキュー表示しない場合
+              resultQuery.innerHTML = '<span style="cursor: pointer" onclick="onClickResults(' + resultText + ');">' + resultText + '</span>';
+            }
+          });
+        });
+      });
+      //　以下は持続注射計算機
+      var ivValues = document.getElementById('ivTable').querySelectorAll('.convertedValue');
+      ivValues.forEach(function (ivInput) {
+        ivInput.addEventListener('input', function () {
+          var opDose = document.getElementById('ivOpioid').value;
+          var opSize = document.getElementById('ivSize').value;
+          var opSpeed = document.getElementById('ivSpeed').value;
+          var opDay = document.getElementById('ivDay').value;
+          var unitOpioid = opDose / opSize * opSpeed;
+          var dayResult = unitOpioid * 24;
+          var remainOp = (opSize - (opSpeed * opDay * 24)) / opSpeed;
+          var rescueOp = Math.round(remainOp / opDay * 100) / 100;
+          var rescueResult = Math.round((dayResult + unitOpioid * document.getElementById('ivRescue').value) * 100) / 100;
+          document.getElementById('ivResult').innerHTML = '<div class="small">' + opDose + 'mgの薬を' + opSize + 'ccに希釈し' + opSpeed + 'ml/hでの1日量</div>' + Math.round(dayResult * 100) / 100 + 'mg/日';
+          document.getElementById('ivRescueResult').innerHTML = '<span style="cursor: pointer" onclick="onClickRescue(' + rescueResult + ');">' + rescueResult + 'mg/日</span>';
+          document.getElementById('ivDayResult').innerHTML = 'レスキュー' + Math.round(remainOp * 100) / 100 + '回 (' + rescueOp + '回/日)分';
+        });
+      });
+
+      //　持続注射計算機2個目
+      var ivValues2 = document.getElementById('ivTable2').querySelectorAll('.convertedValue');
+      ivValues2.forEach(function (ivInput2) {
+        ivInput2.addEventListener('input', function () {
+          var unitOpioid = document.getElementById('ivOpioid2').value / document.getElementById('ivSize2').value * document.getElementById('ivSpeed2').value;
+          var dayResult = unitOpioid * 24;
+          document.getElementById('ivResult2').innerText = Math.round(dayResult * 100) / 100 + 'mg/日';
+        });
+      });
+      // 目標値が変更されたとき
+      document.getElementById('targetDose').addEventListener('input', function () {
+        var ivOpioid = document.getElementById('ivOpioid');
+        ivOpioid.value = RoundNum(this.value * document.getElementById('ivSize').value / document.getElementById('ivSpeed').value / 24);
+        ivOpioid.dispatchEvent(new Event('input'));
+      });
+
+      //　近似ラジオボタンが変更されたとき
+      document.getElementById('roundBox').addEventListener('change', function () {
+        document.getElementById('targetDose').dispatchEvent(new Event('input'));
+      });
+    });
+    function onClickResults(opVal) {
+      // 設定値に数値を入れて持続注射計算機へスクロールを持っていく
+      var tD = document.getElementById('targetDose');
+      tD.value = opVal;
+      tD.dispatchEvent(new Event('input'));
+      tD.scrollIntoView({ behavior: 'smooth' });
+    }
+    function onClickRescue(opVal) {
+      // 変更後計算を行う
+      var ivOpioid = document.getElementById('ivOpioid2');
+      ivOpioid.value = RoundNum(opVal * document.getElementById('ivSize2').value / document.getElementById('ivSpeed2').value / 24);
+      ivOpioid.dispatchEvent(new Event('input'));
+      ivOpioid.scrollIntoView({ behavior: 'smooth' });
+    }
+    function onClickPCA(size, speed, day) {
+      document.getElementById('ivSize').value = size;
+      document.getElementById('ivSpeed').value = speed;
+      document.getElementById('ivDay').value = day;
+      onClickPCA2(size, speed);
+      document.getElementById('targetDose').dispatchEvent(new Event('input'));
+    }
+    function onClickPCA2(size, speed) {
+      document.getElementById('ivSize2').value = size;
+      document.getElementById('ivSpeed2').value = speed;
+      document.getElementById('ivOpioid2').dispatchEvent(new Event('input'));
+    }
+    function RoundNum(x) {
+      var rNum = Number(document.getElementById('roundBox').elements['rNum'].value);
+      //float誤差対策で10をかけて丸める=0.1mgまでしか想定していない
+      return (Math.round(Math.round(x / rNum) * rNum * 10) / 10);
+    }
+  </script>
+</body>
+
+</html>
