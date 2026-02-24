@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- IE互換モード対策 -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
@@ -14,15 +14,12 @@
       margin: 0;
       padding: 0;
       background-color: #f8f9fa;
-      /* Light background */
       color: #212529;
-      /* Default text color */
     }
 
     /* Container Style */
     .container {
       max-width: 960px;
-      /* Adjust as needed */
       margin-left: auto;
       margin-right: auto;
       padding-left: 5px;
@@ -32,7 +29,6 @@
     /* Table Styles */
     .table-responsive {
       overflow-x: auto;
-      /* -webkit-overflow-scrolling: touch; IE11では不要 */
     }
 
     table {
@@ -48,24 +44,22 @@
       padding: 0.35rem;
       vertical-align: top;
       border-top: 1px solid #dee2e6;
-      /* Light gray border */
     }
 
     thead th {
       vertical-align: bottom;
       border-bottom: 2px solid #dee2e6;
       text-align: inherit;
-      /* Align header text */
     }
 
     tbody tr:nth-of-type(odd) {
       background-color: rgba(0, 0, 0, 0.05);
-      /* Striped effect */
     }
 
     /* Input Field Styles */
     input[type="number"],
-    input[type="button"] {
+    input[type="button"],
+    input[type="datetime-local"] {
       padding: 0.375rem;
       font-size: 1rem;
       line-height: 1.5;
@@ -73,34 +67,24 @@
       border-radius: 0.25rem;
       margin: 0.25rem 0;
       box-sizing: border-box;
-      /* IE11でも動作 */
     }
 
     input[type="button"] {
       cursor: pointer;
       background-color: #e9ecef;
-      /* Light gray button */
       color: #212529;
       text-align: center;
       vertical-align: middle;
-      -webkit-user-select: none;
-      /* Safari, Chrome */
-      -moz-user-select: none;
-      /* Firefox */
-      -ms-user-select: none;
-      /* IE11 */
       user-select: none;
       transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     }
 
     input[type="button"]:hover {
       background-color: #d3d9df;
-      /* Slightly darker on hover */
     }
 
     input[type="button"]:active {
       background-color: #c6cfd8;
-      /* Darker when active */
     }
 
     input[type="number"]:disabled {
@@ -120,22 +104,18 @@
     /* Form Check Styles */
     form label {
       display: inline-block;
-      /* Align radio buttons and labels */
       margin-right: 1em;
-      /* Spacing between radio options */
       margin-bottom: 0.5rem;
     }
 
     form input[type="radio"] {
       margin-right: 0.5em;
-      /* Align radio button with text */
     }
 
     /* Link Style */
     .resultValue span[onclick],
     #ivRescueResult span[onclick] {
       color: #0d6efd;
-      /* Bootstrap primary blue */
       text-decoration: underline;
       cursor: pointer;
     }
@@ -143,7 +123,6 @@
     .resultValue span[onclick]:hover,
     #ivRescueResult span[onclick]:hover {
       color: #0a58ca;
-      /* Darker blue on hover */
     }
 
     /* Text Alignment */
@@ -157,7 +136,6 @@
       margin-bottom: 1rem;
       font-size: .875em;
       color: #6c757d;
-      /* Bootstrap secondary text color */
     }
 
     .blockquote-footer a {
@@ -293,28 +271,18 @@
     </div>
     <h4>▽持続注射計算機</h4>
     <div>目標量：<input type="number" value="" id="targetDose" class="convertedValue">mg/日&nbsp;&nbsp;
-      <input type="button" value="アキュフーザー" onclick="onClickPCA(100, 0.5, 7)">&nbsp;<input type="button" value="シリンジ"
-        onclick="onClickPCA(10, 0.2, 2)">
+      <input type="button" value="アキュフーザー" onclick="onClickPCA(100, 0.5)">&nbsp;<input type="button" value="シリンジ"
+        onclick="onClickPCA(10, 0.2)">
     </div>
     <form id="roundBox">▼端数処理<br>
-      <label>
-        <input type="radio" name="rNum" value="10" checked>10mg&nbsp;
-      </label>
-      <label>
-        <input type="radio" name="rNum" value="20">20mg&nbsp;
-      </label>
-      <label>
-        <input type="radio" name="rNum" value="2">2mg&nbsp;
-      </label>
-      <label>
-        <input type="radio" name="rNum" value="1">1mg&nbsp;
-      </label>
-      <label>
-        <input type="radio" name="rNum" value="0.1">0.1mg
-      </label>
+      <label><input type="radio" name="rNum" value="10" checked>10mg</label>
+      <label><input type="radio" name="rNum" value="20">20mg</label>
+      <label><input type="radio" name="rNum" value="2">2mg</label>
+      <label><input type="radio" name="rNum" value="1">1mg</label>
+      <label><input type="radio" name="rNum" value="0.1">0.1mg</label>
     </form>
     <div class="table-responsive">
-      <table id="ivTable" class="table"> <!-- theadを追加 -->
+      <table id="ivTable" class="table">
         <thead>
           <tr>
             <th>&nbsp;</th>
@@ -335,14 +303,17 @@
             <td id="ivResult" colspan="3">mg/日</td>
           </tr>
           <tr>
-            <th>x日用</th>
-            <td><input type="number" value="2" id="ivDay" class="convertedValue">日</td>
-            <td id="ivDayResult" colspan="2"></td>
+            <th>ﾚｽｷｭｰ<br>(1日あたり)</th>
+            <td><input type="number" id="ivRescue" class="convertedValue">回</td>
+            <td id="ivRescueResult" colspan="2"></td>
           </tr>
           <tr>
-            <th>ﾚｽｷｭｰ<br>(1h量)</th>
-            <td><input type="number" id="ivRescue" class="convertedValue">回</td>
-            <td id="ivRescueResult" colspan="2"></td> <!-- link-primaryクラス削除 -->
+            <th>終了予測</th>
+            <td colspan="3" style="line-height: 2;">
+              開始: <input type="datetime-local" id="ivStartTime" style="font-size: 0.9rem; padding: 0.3rem;"><br>
+              持続: <span id="ivDurationResult"></span><br>
+              目安: <span id="ivEndTimeResult" style="color: #0d6efd; font-weight: bold; font-size: 1.1em;"></span>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -350,7 +321,7 @@
     <div>変更後計算 <input type="button" value="アキュフーザー" onclick="onClickPCA2(100, 0.5)">&nbsp;<input type="button"
         value="シリンジ" onclick="onClickPCA2(10, 0.2)"></div>
     <div class="table-responsive">
-      <table id="ivTable2" class="table"> <!-- theadを追加 -->
+      <table id="ivTable2" class="table">
         <thead>
           <tr>
             <th>&nbsp;</th>
@@ -387,14 +358,11 @@
   </figure>
 
   <script>
-    // IE11対応: イベント発火用のヘルパー関数
     function dispatchInputChangeEvent(element) {
       if (typeof (Event) === 'function') {
-        // モダンブラウザ
         var event = new Event('input', { bubbles: true, cancelable: true });
         element.dispatchEvent(event);
       } else {
-        // IE11
         var event = document.createEvent('Event');
         event.initEvent('input', true, true);
         element.dispatchEvent(event);
@@ -404,9 +372,8 @@
     document.addEventListener('DOMContentLoaded', function () {
       var opioidTable = document.getElementById('opioidTable');
       var convertedValues = opioidTable.querySelectorAll('.convertedValue');
-      var standardValues = opioidTable.querySelectorAll('.standardValue'); // 事前に取得
+      var standardValues = opioidTable.querySelectorAll('.standardValue');
 
-      // IE11対応: NodeListにforEachがないためforループを使用
       for (var i = 0; i < convertedValues.length; i++) {
         var input = convertedValues[i];
         input.addEventListener('input', function () {
@@ -415,7 +382,6 @@
           var stdVal = parseFloat(stdValInput.value);
           var inputVal = parseFloat(this.value);
 
-          // 入力値または力価が無効な場合は計算を中断し、他のフィールドをクリア
           if (isNaN(inputVal) || isNaN(stdVal) || stdVal === 0) {
             for (var k = 0; k < convertedValues.length; k++) {
               if (convertedValues[k] !== this) {
@@ -431,14 +397,12 @@
 
           var times = inputVal / stdVal;
 
-          // 他の入力フィールドをクリア
           for (var j = 0; j < convertedValues.length; j++) {
             if (convertedValues[j] !== this) {
               convertedValues[j].value = "";
             }
           }
 
-          // 各行の結果を計算して表示 (IE11対応: forループ)
           for (var k = 0; k < standardValues.length; k++) {
             var stdValueElement = standardValues[k];
             var resultRow = stdValueElement.parentNode.parentNode;
@@ -446,104 +410,130 @@
             var currentStdValue = parseFloat(stdValueElement.value);
 
             if (isNaN(currentStdValue)) {
-              resultQuery.innerHTML = ''; // 力価が無効ならクリア
-              continue; // 次の行へ
+              resultQuery.innerHTML = '';
+              continue;
             }
 
             var result = currentStdValue * times;
 
             if (isNaN(result)) {
-              resultQuery.innerHTML = ''; // 計算不能ならクリア
-              continue; // 次の行へ
+              resultQuery.innerHTML = '';
+              continue;
             }
 
             var resultText = Math.round(result * 100) / 100;
-            // レスキュー計算 (元のロジックを踏襲)
             var rescueLower = Math.round(result) / 10;
             var rescueUpper = Math.round(result * 2) / 10;
             var rescurText = rescueLower + '-' + rescueUpper;
-
-            // 結果表示用のHTMLを生成
             var resultHtml = '<span style="cursor: pointer" onclick="onClickResults(' + resultText + ');">' + resultText + '</span>';
 
             if (resultQuery.classList.contains('rescue')) {
-              //レスキューを表示する場合
               resultQuery.innerHTML = resultHtml + '<br>(' + rescurText + ')';
             } else {
-              //レスキュー表示しない場合
               resultQuery.innerHTML = resultHtml;
             }
           }
         });
       }
 
+      // 予測終了用の日時初期化
+      var ivStartTimeInput = document.getElementById('ivStartTime');
+      var setInitialTime = function () {
+        var now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+        ivStartTimeInput.value = now.toISOString().slice(0, 16);
+      };
+      setInitialTime();
+
       //--- 持続注射計算機 1 ---
       var ivTable = document.getElementById('ivTable');
-      var ivValues = ivTable.querySelectorAll('.convertedValue'); // ivTable内の要素に限定
+      var ivValues = ivTable.querySelectorAll('.convertedValue');
       var ivOpioidInput = document.getElementById('ivOpioid');
       var ivSizeInput = document.getElementById('ivSize');
       var ivSpeedInput = document.getElementById('ivSpeed');
-      var ivDayInput = document.getElementById('ivDay');
       var ivRescueInput = document.getElementById('ivRescue');
       var ivResultCell = document.getElementById('ivResult');
-      var ivDayResultCell = document.getElementById('ivDayResult');
       var ivRescueResultCell = document.getElementById('ivRescueResult');
+      var durationSpan = document.getElementById('ivDurationResult');
+      var endTimeSpan = document.getElementById('ivEndTimeResult');
 
       function calculateIV() {
         var opDose = parseFloat(ivOpioidInput.value);
         var opSize = parseFloat(ivSizeInput.value);
         var opSpeed = parseFloat(ivSpeedInput.value);
-        var opDay = parseFloat(ivDayInput.value);
-        var rescueCount = parseFloat(ivRescueInput.value) || 0; // 未入力時は0回とする
+        var rescueCount = parseFloat(ivRescueInput.value) || 0;
+        var startTimeStr = ivStartTimeInput.value;
 
-        // 入力値の検証
-        if (isNaN(opDose) || isNaN(opSize) || opSize <= 0 || isNaN(opSpeed) || opSpeed <= 0 || isNaN(opDay) || opDay <= 0) {
+        if (isNaN(opDose) || isNaN(opSize) || opSize <= 0 || isNaN(opSpeed) || opSpeed <= 0) {
           ivResultCell.innerHTML = '入力値を確認してください';
-          ivDayResultCell.innerHTML = '';
           ivRescueResultCell.innerHTML = '';
+          durationSpan.innerText = '';
+          endTimeSpan.innerText = '';
           return;
         }
 
-        var concentration = opDose / opSize; // 濃度 mg/cc(ml)
-        var unitOpioidPerHour = concentration * opSpeed; // 1時間あたりの投与量 mg/h
-        var dayResult = unitOpioidPerHour * 24; // 1日あたりの投与量 mg/日
+        var concentration = opDose / opSize;
+        var unitOpioidPerHour = concentration * opSpeed;
+        var dayResult = unitOpioidPerHour * 24;
 
-        var totalVolumeNeeded = opSpeed * opDay * 24; // x日間で必要な総量(ml)
-        var remainingVolume = opSize - totalVolumeNeeded; // 残量(ml)
-        var remainingHours = remainingVolume / opSpeed; // 残りの時間(h)
-        var possibleRescues = Math.round(remainingHours * 100) / 100; // 残り時間(h)がそのままレスキュー可能回数（1h量の場合）
-        var possibleRescuesPerDay = Math.round(possibleRescues / opDay * 100) / 100;
-
-        var rescueDoseTotal = unitOpioidPerHour * rescueCount; // レスキュー分の総投与量(mg/日換算ではない)
-        var totalDailyDoseWithRescue = dayResult + rescueDoseTotal; // レスキュー込みの総投与量(mg/日) - この計算は文脈による
-
-        // 結果表示
         ivResultCell.innerHTML = '<div class="small">' + opDose + 'mgの薬を' + opSize + 'ccに希釈し' + opSpeed + 'ml/hでの1日量</div>' + (Math.round(dayResult * 100) / 100) + 'mg/日';
 
-        // x日用の計算結果表示
-        if (remainingVolume >= 0) {
-          ivDayResultCell.innerHTML = 'ﾚｽｷｭｰ(1h量): ' + possibleRescues + '回 (' + possibleRescuesPerDay + '回/日)分';
-        } else {
-          ivDayResultCell.innerHTML = '<span style="color: red;">' + opDay + '日持ちません (不足量: ' + (Math.round(Math.abs(remainingVolume) * 100) / 100) + 'ml)</span>';
-        }
-
-        // レスキュー込みの計算結果表示 (クリックで変更後計算へ)
-        // if (!isNaN(rescueCount) && rescueCount > 0 && !isNaN(totalDailyDoseWithRescue)) {
+        // --- レスキュー(1日あたり)の計算 ---
+        var rescueDoseTotal = unitOpioidPerHour * rescueCount;
+        var totalDailyDoseWithRescue = dayResult + rescueDoseTotal;
         var rescueResultValue = Math.round(totalDailyDoseWithRescue * 100) / 100;
-        ivRescueResultCell.innerHTML = '<span style="cursor: pointer" onclick="onClickRescue(' + rescueResultValue + ');">' + rescueResultValue + 'mg/日</span> (' + rescueCount + '回/日)';
-        // } else {
-        // ivRescueResultCell.innerHTML = ''; // レスキュー回数未入力または計算不能ならクリア
-        // }
+        ivRescueResultCell.innerHTML = '<span style="cursor: pointer" onclick="onClickRescue(' + rescueResultValue + ');">' + rescueResultValue + 'mg/日</span> (' + rescueCount + '回使用時)';
+
+        // --- 終了予測の計算 ---
+        // 1日あたりのレスキュー回数を含めた、実質的な1時間あたりの平均消費量(ml/h)を計算
+        // （1レスキュー = 1時間分の流量(opSpeed)として計算）
+        var effectiveHourlySpeed = opSpeed * (1 + rescueCount / 24);
+        var totalAvailableHours = opSize / effectiveHourlySpeed;
+
+        if (totalAvailableHours <= 0) {
+          durationSpan.innerText = "0日と 0時間 0分 (残量なし)";
+          endTimeSpan.innerText = "終了済";
+          endTimeSpan.style.color = "red";
+        } else {
+          var dDays = Math.floor(totalAvailableHours / 24);
+          var dHours = Math.floor(totalAvailableHours % 24);
+          var dMins = Math.round((totalAvailableHours % 1) * 60);
+          if (dMins === 60) { dHours++; dMins = 0; }
+          if (dHours === 24) { dDays++; dHours = 0; }
+
+          durationSpan.innerText = dDays + "日と " + dHours + "時間 " + dMins + "分";
+
+          if (startTimeStr) {
+            var startDate = new Date(startTimeStr);
+            startDate.setMinutes(startDate.getMinutes() + Math.round(totalAvailableHours * 60));
+
+            var yy = startDate.getFullYear();
+            var mm = startDate.getMonth() + 1;
+            var dd = startDate.getDate();
+            var hh = startDate.getHours().toString();
+            var mn = startDate.getMinutes().toString();
+            if (hh.length < 2) hh = '0' + hh;
+            if (mn.length < 2) mn = '0' + mn;
+
+            var daysOfWeek = ['日', '月', '火', '水', '木', '金', '土'];
+            var dow = daysOfWeek[startDate.getDay()];
+
+            endTimeSpan.innerText = yy + "/" + mm + "/" + dd + "(" + dow + ") " + hh + ":" + mn;
+            endTimeSpan.style.color = "#0d6efd";
+          } else {
+            endTimeSpan.innerText = "-";
+          }
+        }
       }
 
-      // IE11対応: forループ
       for (var i = 0; i < ivValues.length; i++) {
         ivValues[i].addEventListener('input', calculateIV);
       }
+      ivStartTimeInput.addEventListener('input', calculateIV);
 
       // --- 持続注射計算機 2 ---
       var ivTable2 = document.getElementById('ivTable2');
-      var ivValues2 = ivTable2.querySelectorAll('.convertedValue'); // ivTable2内の要素に限定
+      var ivValues2 = ivTable2.querySelectorAll('.convertedValue');
       var ivOpioidInput2 = document.getElementById('ivOpioid2');
       var ivSizeInput2 = document.getElementById('ivSize2');
       var ivSpeedInput2 = document.getElementById('ivSpeed2');
@@ -554,24 +544,20 @@
         var opSize2 = parseFloat(ivSizeInput2.value);
         var opSpeed2 = parseFloat(ivSpeedInput2.value);
 
-        // 入力値の検証
         if (isNaN(opDose2) || isNaN(opSize2) || opSize2 <= 0 || isNaN(opSpeed2) || opSpeed2 <= 0) {
           ivResultCell2.innerText = '入力値を確認してください';
           return;
         }
 
-        var unitOpioid2 = opDose2 / opSize2 * opSpeed2; // 1時間あたりの投与量 mg/h
-        var dayResult2 = unitOpioid2 * 24; // 1日あたりの投与量 mg/日
-
+        var unitOpioid2 = opDose2 / opSize2 * opSpeed2;
+        var dayResult2 = unitOpioid2 * 24;
         ivResultCell2.innerText = (Math.round(dayResult2 * 100) / 100) + 'mg/日';
       }
 
-      // IE11対応: forループ
       for (var i = 0; i < ivValues2.length; i++) {
         ivValues2[i].addEventListener('input', calculateIV2);
       }
 
-      // --- 目標値・近似ラジオボタンのイベントリスナー ---
       var targetDoseInput = document.getElementById('targetDose');
       var roundBoxForm = document.getElementById('roundBox');
 
@@ -588,24 +574,20 @@
         var requiredOpioid = requiredConcentration * opSize;
 
         ivOpioidInput.value = RoundNum(requiredOpioid);
-        calculateIV(); // 計算を実行して表示を更新
+        calculateIV();
       });
 
       roundBoxForm.addEventListener('change', function () {
         if (targetDoseInput.value) {
-          // IE11対応: イベント発火
           dispatchInputChangeEvent(targetDoseInput);
         }
       });
     });
 
-    // --- グローバル関数 ---
     function onClickResults(opVal) {
       var tD = document.getElementById('targetDose');
       tD.value = opVal;
-      // IE11対応: イベント発火
       dispatchInputChangeEvent(tD);
-      // IE11対応: smoothスクロールなし
       tD.scrollIntoView();
     }
 
@@ -622,29 +604,24 @@
       var requiredOpioid2 = requiredConcentration2 * ivSize2;
 
       ivOpioid2.value = RoundNum(requiredOpioid2);
-      // IE11対応: イベント発火
       dispatchInputChangeEvent(ivOpioid2);
-      // IE11対応: smoothスクロールなし
       ivOpioid2.scrollIntoView();
     }
 
-    function onClickPCA(size, speed, day) {
+    // 第3引数を削除
+    function onClickPCA(size, speed) {
       document.getElementById('ivSize').value = size;
       document.getElementById('ivSpeed').value = speed;
-      document.getElementById('ivDay').value = day;
       onClickPCA2(size, speed);
-      // IE11対応: イベント発火
       dispatchInputChangeEvent(document.getElementById('targetDose'));
-      dispatchInputChangeEvent(document.getElementById('ivOpioid')); // ivOpioidのイベントも発火させる
+      dispatchInputChangeEvent(document.getElementById('ivOpioid'));
     }
 
     function onClickPCA2(size, speed) {
       document.getElementById('ivSize2').value = size;
       document.getElementById('ivSpeed2').value = speed;
-      // IE11対応: イベント発火
       dispatchInputChangeEvent(document.getElementById('ivOpioid2'));
     }
-
     function RoundNum(x) {
       // ラジオボタンから選択された丸め単位を取得
       var selectedRadio = document.querySelector('#roundBox input[name="rNum"]:checked');
@@ -663,9 +640,6 @@
         // 整数単位で丸める場合
         return Math.round(x / rNum) * rNum;
       }
-      // より汎用的な丸め (ただし、元のコードの意図と少し異なる可能性あり)
-      // var multiplier = Math.pow(10, (String(rNum).split('.')[1] || '').length);
-      // return Math.round(x / rNum * multiplier) / multiplier * rNum;
     }
   </script>
 </body>
